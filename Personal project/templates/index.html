@@ -10,9 +10,10 @@
         Enter a city:<input type="text" id="city" name="city" required>
         <button class="pill" type="submit">Click me!</button>
         <h1>home page</h1>
-        {% for x in content %}
-            <p>{{x}}</p>
-        {% endfor %}
+<!--this is the code that we have passed through the python code allowing us to show the values of the weather
+    and the temperature in a specific city-->
+        <p>{{weather}}</p>
+        <p>{{temp}}</p>
     </form>
 <script src="../static/css/js/script.js"></script>
 </body>
