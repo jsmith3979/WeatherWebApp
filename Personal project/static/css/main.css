@@ -1,0 +1,22 @@
+h1 {
+    color: aquamarine;
+}
+
+.pill {
+    font-size: 12px;
+    padding: 0.5em 1em;
+    margin: 0.25em;
+    border-radius: 1em;
+    border: none;
+    outline: none;
+    background: #dddddd;
+    cursor: pointer;
+}
+.pill:not(.pill--selected):hover{
+    background: #cccccc;
+}
+.pill--selected{
+    background: aqua;
+    color: #ffffff;
+}
+

@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
 </head>
 <body>
-    <h1>home page</h1>
-    {% for x in content %}
-        <p>{{x}}</p>
-    {% endfor %}
+    <form method="post" action="{{url_for('home')}}">
+        Enter a city:<input type="text" id="city" name="city" required>
+        <button class="pill" type="submit">Click me!</button>
+        <h1>home page</h1>
+        {% for x in content %}
+            <p>{{x}}</p>
+        {% endfor %}
+    </form>
+<script src="../static/css/js/script.js"></script>
 </body>
 </html>
