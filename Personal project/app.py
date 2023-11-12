@@ -8,6 +8,7 @@ app = Flask(__name__)
 # and then post to post the data onto the
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    # variables
     weather = None
     temp = None
     # if the request method is equal to post then we will request the form from the html which in this case
