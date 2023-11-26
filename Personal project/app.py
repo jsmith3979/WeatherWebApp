@@ -17,7 +17,7 @@ def home():
         user_input = request.form['city']
         # we then use the 'user_input' which is the city to find the correct city for the weather
         weather_data = requests.get(
-            f"https://api.openweathermap.org/data/2.5/weather?q={user_input}&units=imperial&APPID={api_key}"
+            f"https://api.openweathermap.org/data/2.5/weather?q={user_input}&units=metric&APPID={api_key}"
         )
         # if the user types in a city that is not in the data it will return an error
         if weather_data.json()['cod'] == '404':

@@ -14,6 +14,9 @@
     and the temperature in a specific city-->
         <p>{{weather}}</p>
         <p>{{temp}}</p>
+        {% if weather == "Clouds" %}
+            <img src="{{ url_for('static', filename='images/clouds.jpeg') }}" alt="Sunny Image">
+        {% endif %}
     </form>
 <script src="../static/css/js/script.js"></script>
 </body>
