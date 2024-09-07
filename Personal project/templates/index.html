@@ -7,15 +7,24 @@
 </head>
 <body>
     <form method="post" action="{{url_for('home')}}">
+        <h1>Home Page</h1>
         Enter a city:<input type="text" id="city" name="city" required>
         <button class="pill" type="submit">Click me!</button>
-        <h1>home page</h1>
+
 <!--this is the code that we have passed through the python code allowing us to show the values of the weather
     and the temperature in a specific city-->
         <p>{{weather}}</p>
         <p>{{temp}}</p>
         {% if weather == "Clouds" %}
             <img src="{{ url_for('static', filename='images/clouds.jpeg') }}" alt="Sunny Image">
+        {% endif %}
+
+        {% if weather == "Rain" %}
+            <img src="{{ url_for('static', filename='images/rain-images.jpg') }}" alt="Sunny Image">
+        {% endif %}
+
+        {% if weather == "Thunderstorm" %}
+            <img src="{{ url_for('static', filename='images/images.png') }}" alt="Sunny Image">
         {% endif %}
     </form>
 <script src="../static/css/js/script.js"></script>

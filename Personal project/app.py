@@ -29,5 +29,12 @@ def home():
         # we then render the weather data and temp data into the html allowing us to use it in our html code
     return render_template("index.html",weather=weather, temp=temp)
 
+@app.route('/register', methods=['POST'])
+def register():
+
+
 if __name__ == '__main__':
     app.run()
+
+
+
