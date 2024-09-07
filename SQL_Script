@@ -1,0 +1,7 @@
+create table users
+(
+    user_id         int auto_increment
+        primary key,
+    user_first_name char(20) not null,
+    user_password   char(20) not null
+);
