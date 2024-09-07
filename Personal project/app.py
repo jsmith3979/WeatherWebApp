@@ -1,3 +1,4 @@
+import mysql.connector
 from flask import Flask, redirect, url_for, render_template,request
 import requests
 from db_connection import create_connection
@@ -30,7 +31,7 @@ def home():
         # we then render the weather data and temp data into the html allowing us to use it in our html code
     return render_template("index.html",weather=weather, temp=temp)
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['GET','POST'])
 def register():
     if request.method == 'POST':
         user_first_name = request.form['user_first_name']
@@ -41,7 +42,20 @@ def register():
 
         sql = "INSERT INTO users (user_first_name, user_password) VALUES (%s, %s)"
         val = (user_first_name, user_password)
-        return render_template("index.html")
+        try:
+            # Execute the query and commit
+            cursor.execute(sql, val)
+            db.commit()
+            return redirect('/')  # Redirect to home page or confirmation page
+        except mysql.connector.Error as err:
+            print(f"Error: {err}")
+            return "There was an issue adding the user to the database."
+        finally:
+            # Close the database connection
+            cursor.close()
+            db.close()
+
+    return render_template("register.html")
 if __name__ == '__main__':
     app.run()
 
