@@ -2,6 +2,7 @@ import mysql.connector
 from flask import Flask, redirect, url_for, render_template,request
 import requests
 from db_connection import create_connection
+from werkzeug.security import generate_password_hash, check_password_hash
 
 api_key = '30d4741c779ba94c470ca1f63045390a'
 
@@ -34,14 +35,16 @@ def home():
 @app.route('/register', methods=['GET','POST'])
 def register():
     if request.method == 'POST':
-        user_first_name = request.form['user_first_name']
+        user_name = request.form['user_name']
         user_password = request.form['user_password']
 
         db = create_connection()
         cursor = db.cursor()
 
-        sql = "INSERT INTO users (user_first_name, user_password) VALUES (%s, %s)"
-        val = (user_first_name, user_password)
+        hashed_password = generate_password_hash(user_password)
+
+        sql = "INSERT INTO users (user_name, user_password) VALUES (%s, %s)"
+        val = (user_name, hashed_password)
         try:
             # Execute the query and commit
             cursor.execute(sql, val)
@@ -56,6 +59,19 @@ def register():
             db.close()
 
     return render_template("register.html")
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        user_name = request.form['user_name']
+        db = create_connection()
+        cursor = db.cursor()
+        sql = "SELECT * FROM users WHERE user_name = %s"
+        val = (user_name)
+
+        cursor.execute(sql, val)
+
+
 if __name__ == '__main__':
     app.run()
 
