@@ -1,5 +1,6 @@
 from flask import Flask, redirect, url_for, render_template,request
 import requests
+from db_connection import create_connection
 
 api_key = '30d4741c779ba94c470ca1f63045390a'
 
@@ -31,8 +32,16 @@ def home():
 
 @app.route('/register', methods=['POST'])
 def register():
+    if request.method == 'POST':
+        user_first_name = request.form['user_first_name']
+        user_password = request.form['user_password']
 
+        db = create_connection()
+        cursor = db.cursor()
 
+        sql = "INSERT INTO users (user_first_name, user_password) VALUES (%s, %s)"
+        val = (user_first_name, user_password)
+        return render_template("index.html")
 if __name__ == '__main__':
     app.run()
 

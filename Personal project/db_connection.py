@@ -5,10 +5,10 @@ from mysql.connector import Error
 def create_connection():
     try:
         connection = mysql.connector.connect(
-            host='127.0.0.1',        # or '127.0.0.1' if using localhost
-            user='root',             # your MySQL username
-            password='darkknight3979',# your MySQL password
-            database='weather_app' # the database you want to connect to
+            host='127.0.0.1',        
+            user='root',
+            password='darkknight3979',
+            database='weather_app'
         )
         if connection:
             print("Connection object created")
