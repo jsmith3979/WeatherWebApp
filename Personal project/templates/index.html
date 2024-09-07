@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
 </head>
 <body>
+    <a href="register" class="button">register</a>
+    <a href="login" class="button">login</a>
+
     <form method="post" action="{{url_for('home')}}">
         <h1>Home Page</h1>
         Enter a city:<input type="text" id="city" name="city" required>
