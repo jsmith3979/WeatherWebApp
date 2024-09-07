@@ -60,16 +60,47 @@ def register():
 
     return render_template("register.html")
 
-@app.route('/login', methods=['GET','POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         user_name = request.form['user_name']
-        db = create_connection()
-        cursor = db.cursor()
-        sql = "SELECT * FROM users WHERE user_name = %s"
-        val = (user_name)
+        user_password = request.form['user_password']
 
-        cursor.execute(sql, val)
+        # Input validation
+        if not user_name or not user_password:
+            return "Please provide both a username and a password."
+
+        db = create_connection()
+        if db is None:
+            return "Failed to connect to the database."
+
+        cursor = db.cursor()
+
+        sql = "SELECT user_password FROM users WHERE user_name = %s"
+        val = (user_name,)  # Note the trailing comma
+
+        try:
+            cursor.execute(sql, val)
+            user = cursor.fetchone()
+
+            if user:
+                stored_hashed_password = user[0]
+
+
+                if check_password_hash(stored_hashed_password, user_password):
+                    return redirect('/')
+                else:
+                    return "Invalid username or password."
+            else:
+                return "Invalid username or password."
+        except mysql.connector.Error as err:
+            print(f"Database query error: {err}")
+            return "There was an issue with the database query."
+        finally:
+            cursor.close()
+            db.close()
+
+    return render_template("login.html")
 
 
 if __name__ == '__main__':
