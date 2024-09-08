@@ -41,12 +41,23 @@ def token_required(func):
         return func(*args, **kwargs)
     return decorated
 
+
 @app.route('/test_token')
 @token_required
 def test_token():
     token = session.get('token')
-    decoded = decode_token(token, app.config['SECRET_KEY'])
-    return jsonify(decoded)
+    if not token:
+        return jsonify({'error': 'No token found'}), 401
+
+    try:
+        decoded = decode_token(token, app.config['SECRET_KEY'])
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+    # Extract the user_name from the decoded token
+    user_name = decoded.get('user_name', 'Unknown User')
+
+    return jsonify({'user_name': user_name})
 
 @app.route('/', methods=['GET', 'POST'])
 @token_required
@@ -128,6 +139,11 @@ def login():
             return "Invalid username or password."
 
     return render_template("login.html")
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)  # Set debug=True for detailed error logs
