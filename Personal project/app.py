@@ -42,28 +42,30 @@ def token_required(func):
     return decorated
 
 
-@app.route('/test_token')
-@token_required
-def test_token():
-    token = session.get('token')
-    if not token:
-        return jsonify({'error': 'No token found'}), 401
+# @app.route('/test_token')
+# @token_required
+# def test_token():
+#     token = session.get('token')
+#     if not token:
+#         return jsonify({'error': 'No token found'}), 401
+#
+#     try:
+#         decoded = decode_token(token, app.config['SECRET_KEY'])
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 400
+#
+#     # Extract the user_name from the decoded token
+#     user_name = decoded.get('user_name', 'Unknown User')
+#
+#     return jsonify({'user_name': user_name})
 
-    try:
-        decoded = decode_token(token, app.config['SECRET_KEY'])
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
-
-    # Extract the user_name from the decoded token
-    user_name = decoded.get('user_name', 'Unknown User')
-
-    return jsonify({'user_name': user_name})
 
 @app.route('/', methods=['GET', 'POST'])
 @token_required
 def home():
     weather = None
     temp = None
+    user_name = session.get('user_name', 'Unknown User')  # Get the user_name from session
 
     if request.method == 'POST':
         user_input = request.form['city']
@@ -76,7 +78,9 @@ def home():
         else:
             weather = data['weather'][0]['main']
             temp = data['main']['temp']
-    return render_template("index.html", weather=weather, temp=temp)
+
+    # Pass the user_name to the template
+    return render_template("index.html", weather=weather, temp=temp, user_name=user_name)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
